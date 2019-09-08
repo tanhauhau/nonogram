@@ -1,0 +1,21 @@
+.nonogram {
+  display: grid;
+  margin: 16px auto;
+}
+.row {
+}
+.block {
+  display: inline-block;
+  border: 2px solid black;
+}
+.label {
+  width: 100px;
+  display: flex;
+  align-items: center;
+}
+.input {
+  align-self: center;
+}
+.input:global(.ant-form-item) {
+  margin-bottom: 0;
+}

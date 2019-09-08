@@ -1,26 +1,141 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Size from './Size';
+import NonogramSolver from './NonogramSolver';
+import { Button } from 'antd';
+import { solve, strToNumArr } from './utils';
+import 'antd/dist/antd.css';
+
+const DEFAULT_X = [
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+];
+const DEFAULT_Y = [
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+];
 
 function App() {
+  const [size, setSize] = React.useState([15, 15]);
+  const [xRequirements, setXRequirements] = React.useState(DEFAULT_X);
+  const [yRequirements, setYRequirements] = React.useState(DEFAULT_Y);
+  const [solution, setSolution] = React.useState(null);
+  const setSteps = useStep(solution, setSolution);
+
+  const onRequirementChange = (value, column, row) => {
+    if (column === 0) {
+      // y
+      const newYRequirements = [...yRequirements];
+      newYRequirements[row - 1] = value;
+      setYRequirements(newYRequirements);
+    } else {
+      // x
+      const newXRequirements = [...xRequirements];
+      newXRequirements[column - 1] = value;
+      setXRequirements(newXRequirements);
+    }
+  };
+  const onSizeChange = newSize => {
+    setSize(newSize);
+    if (xRequirements.length < newSize[0]) {
+      setXRequirements(
+        xRequirements.concat(
+          new Array(newSize[0] - xRequirements.length).fill(null)
+        )
+      );
+    } else if (xRequirements.length > newSize[0]) {
+      setXRequirements(xRequirements.slice(0, newSize[0]));
+    } else if (yRequirements.length < newSize[1]) {
+      setYRequirements(
+        yRequirements.concat(
+          new Array(newSize[1] - yRequirements.length).fill(null)
+        )
+      );
+    } else if (yRequirements.length > newSize[1]) {
+      setYRequirements(yRequirements.slice(0, newSize[1]));
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ paddingTop: 16, textAlign: 'center' }}>
+      <Size size={size} onChange={onSizeChange} />
+      <NonogramSolver
+        size={size}
+        onRequirementChange={onRequirementChange}
+        xRequirements={xRequirements}
+        yRequirements={yRequirements}
+        solution={solution}
+      />
+      <Button
+        type="primary"
+        onClick={() => {
+          const [_, steps] = solve({
+            xRequirements: xRequirements.map(strToNumArr),
+            yRequirements: yRequirements.map(strToNumArr),
+            width: size[0],
+            height: size[1],
+          });
+          setSteps(steps);
+          setSolution(
+            new Array(size[1])
+              .fill(null)
+              .map(() => new Array(size[0]).fill(false))
+          );
+        }}
+      >
+        Solve
+      </Button>
     </div>
   );
+}
+
+function useStep(solution, setSolution) {
+  const [steps, setSteps] = useState(null);
+  const [stepIndex, setStepIndex] = useState(0);
+
+  React.useEffect(() => {
+    if (steps !== null && stepIndex < steps.length) {
+      setTimeout(() => {
+        setSolution(solution => getNextSolution(solution, steps[stepIndex]));
+        setStepIndex(index => index + 1);
+      });
+    }
+  }, [steps, stepIndex]);
+
+  return setSteps;
+}
+
+function getNextSolution(state, { mark, i, j }) {
+  return [
+    ...state.slice(0, i),
+    [...state[i].slice(0, j), mark, ...state[i].slice(j + 1)],
+    ...state.slice(i + 1),
+  ];
 }
 
 export default App;
