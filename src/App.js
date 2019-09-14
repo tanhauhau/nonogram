@@ -1,43 +1,43 @@
 import React, { useState } from 'react';
 import Size from './Size';
 import NonogramSolver from './NonogramSolver';
-import { Button } from 'antd';
+import { Button, Checkbox } from 'antd';
 import { solve, strToNumArr } from './utils';
 import 'antd/dist/antd.css';
 
 const DEFAULT_X = [
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
+  '4 4',
+  '1 2 3 2',
+  '13 1',
+  '13',
+  '4 2 2',
+  '7 1 1',
+  '1 4 1 2',
+  '1 3 3',
+  '1 4 1 2',
+  '7 1',
+  '4 2 1',
+  '13',
+  '8 3 2',
+  '1 6 2',
+  '4 4',
 ];
 const DEFAULT_Y = [
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
-  '',
+  '3 3',
+  '1 1 5 1 1',
+  '1 4 4 1',
+  '6 6',
+  '13',
+  '12',
+  '3 5 3',
+  '6 6',
+  '5 2 2',
+  '1 2 3 2 1',
+  '1 2 1 2 1',
+  '1 2 3 2 1',
+  '3 2 2 1 1',
+  '1 2 3',
+  '4 3',
 ];
 
 function App() {
@@ -45,6 +45,7 @@ function App() {
   const [xRequirements, setXRequirements] = React.useState(DEFAULT_X);
   const [yRequirements, setYRequirements] = React.useState(DEFAULT_Y);
   const [solution, setSolution] = React.useState(null);
+  const [showStep, setShowStep] = React.useState(false);
   const setSteps = useStep(solution, setSolution);
 
   const onRequirementChange = (value, column, row) => {
@@ -94,22 +95,34 @@ function App() {
       <Button
         type="primary"
         onClick={() => {
-          const [_, steps] = solve({
+          const [solution, steps] = solve({
             xRequirements: xRequirements.map(strToNumArr),
             yRequirements: yRequirements.map(strToNumArr),
             width: size[0],
             height: size[1],
           });
-          setSteps(steps);
-          setSolution(
-            new Array(size[1])
-              .fill(null)
-              .map(() => new Array(size[0]).fill(false))
-          );
+          if (showStep) {
+            setSteps(steps);
+            setSolution(
+              new Array(size[1])
+                .fill(null)
+                .map(() => new Array(size[0]).fill(false))
+            );
+          } else {
+            setSteps(null);
+            setSolution(solution);
+          }
         }}
       >
         Solve
       </Button>
+      <Checkbox
+        style={{ marginLeft: 8 }}
+        onClick={() => setShowStep(!showStep)}
+        checked={showStep}
+      >
+        Show Steps
+      </Checkbox>
     </div>
   );
 }
@@ -124,6 +137,8 @@ function useStep(solution, setSolution) {
         setSolution(solution => getNextSolution(solution, steps[stepIndex]));
         setStepIndex(index => index + 1);
       });
+    } else if (steps === null) {
+      setStepIndex(0);
     }
   }, [steps, stepIndex]);
 
