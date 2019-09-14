@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/nonogram/static/css/main.662e43f5.chunk.css",
-    "main.js": "/nonogram/static/js/main.755b040c.chunk.js",
-    "main.js.map": "/nonogram/static/js/main.755b040c.chunk.js.map",
+    "main.css": "/nonogram/static/css/main.a26fc3b0.chunk.css",
+    "main.js": "/nonogram/static/js/main.5d33c2be.chunk.js",
+    "main.js.map": "/nonogram/static/js/main.5d33c2be.chunk.js.map",
     "runtime~main.js": "/nonogram/static/js/runtime~main.d2a9b79d.js",
     "runtime~main.js.map": "/nonogram/static/js/runtime~main.d2a9b79d.js.map",
     "static/css/2.7a1db334.chunk.css": "/nonogram/static/css/2.7a1db334.chunk.css",
-    "static/js/2.1231dca5.chunk.js": "/nonogram/static/js/2.1231dca5.chunk.js",
-    "static/js/2.1231dca5.chunk.js.map": "/nonogram/static/js/2.1231dca5.chunk.js.map",
+    "static/js/2.83acd651.chunk.js": "/nonogram/static/js/2.83acd651.chunk.js",
+    "static/js/2.83acd651.chunk.js.map": "/nonogram/static/js/2.83acd651.chunk.js.map",
     "index.html": "/nonogram/index.html",
-    "precache-manifest.a6ebad339189951c9c30c660b55ee64a.js": "/nonogram/precache-manifest.a6ebad339189951c9c30c660b55ee64a.js",
+    "precache-manifest.293ec044d28a5b121cee2d5146248d41.js": "/nonogram/precache-manifest.293ec044d28a5b121cee2d5146248d41.js",
     "service-worker.js": "/nonogram/service-worker.js",
     "static/css/2.7a1db334.chunk.css.map": "/nonogram/static/css/2.7a1db334.chunk.css.map",
-    "static/css/main.662e43f5.chunk.css.map": "/nonogram/static/css/main.662e43f5.chunk.css.map"
+    "static/css/main.a26fc3b0.chunk.css.map": "/nonogram/static/css/main.a26fc3b0.chunk.css.map"
   }
 }
